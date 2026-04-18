@@ -1,33 +1,38 @@
-const P = "https://api.allorigins.win/raw?url=";
-const I = "https://inv.vern.cc/api/v1/search?q=";
+// Motore di ricerca video ultra-semplice
+const searchBtn = document.getElementById('searchBtn');
+const container = document.getElementById('video-container');
 
-document.getElementById('searchBtn').onclick = () => {
-    let q = document.getElementById('query').value;
-    let c = document.getElementById('video-container');
-    c.innerHTML = "Caricamento...";
-    
-    fetch(P + encodeURIComponent(I + q))
+searchBtn.onclick = function() {
+    const query = document.getElementById('query').value;
+    if (!query) return;
+
+    container.innerHTML = "Cerco i video...";
+
+    // Usiamo un proxy diverso per vedere se si sblocca
+    const url = "https://inv.tux.pizza/api/v1/search?q=" + encodeURIComponent(query);
+    const proxyUrl = "https://api.allorigins.win/raw?url=" + encodeURIComponent(url);
+
+    fetch(proxyUrl)
         .then(res => res.json())
         .then(data => {
-            c.innerHTML = "";
+            container.innerHTML = ""; // Pulisce la scritta "Cerco..."
             data.forEach(v => {
-                if(v.type === "video") {
-                    let d = document.createElement('div');
-                    d.className = 'video-card';
-                    d.innerHTML = `<img src="${v.videoThumbnails[0].url}"><p>${v.title}</p>`;
-                    d.onclick = () => {
-                        document.getElementById('player-modal').classList.remove('hidden');
-                        document.getElementById('player').innerHTML = `<iframe width="100%" src="https://www.youtube.com/embed/${v.videoId}?vq=tiny" frameborder="0"></iframe>`;
+                if (v.type === "video") {
+                    const card = document.createElement('div');
+                    card.className = 'video-card';
+                    card.innerHTML = `
+                        <img src="${v.videoThumbnails[0].url}" style="width:100%">
+                        <p>${v.title}</p>
+                    `;
+                    // Quando clicchi la foto, apre il video
+                    card.onclick = () => {
+                        window.open("https://www.youtube.com/embed/" + v.videoId + "?vq=tiny", "_blank");
                     };
-                    c.appendChild(d);
+                    container.appendChild(card);
                 }
             });
         })
-        .catch(() => c.innerHTML = "Errore! Riprova.");
+        .catch(err => {
+            container.innerHTML = "Errore di connessione. Riprova tra un secondo!";
+        });
 };
-
-document.getElementById('closeBtn').onclick = () => {
-    document.getElementById('player-modal').classList.add('hidden');
-    document.getElementById('player').innerHTML = "";
-};
-
