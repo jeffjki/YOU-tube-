@@ -1,49 +1,33 @@
-const searchBtn = document.getElementById('searchBtn');
-const queryInput = document.getElementById('query');
-const container = document.getElementById('video-container');
-const modal = document.getElementById('player-modal');
-const closeBtn = document.getElementById('closeBtn');
-const playerDiv = document.getElementById('player');
+const P = "https://api.allorigins.win/raw?url=";
+const I = "https://inv.vern.cc/api/v1/search?q=";
 
-// Usiamo un'istanza pubblica di Invidious tramite un proxyconconst PROXY = "https://api.allorigins.win/raw?url=";
-const INVIDIOUS = "https://invidious.projectsegfau.lt/api/v1/search?q=";
-
-searchBtn.addEventListener('click', async () => {
-    const query = queryInput.value;
-    if (!query) return;
-
-    container.innerHTML = "<p>Ricerca in corso...</p>";
-
-    try {
-        const response = await fetch(PROXY + encodeURIComponent(INVIDIOUS + query));
-        const data = await response.json();
-
-        container.innerHTML = "";
-        data.forEach(video => {
-            if (video.type === "video") {
-                const card = document.createElement('div');
-                card.className = 'video-card';
-                card.innerHTML = `
-                    <img src="${video.videoThumbnails[0].url}" alt="thumb">
-                    <p>${video.title.substring(0, 20)}...</p>
-                `;
-                card.onclick = () => playVideo(video.videoId);
-                container.appendChild(card);
-            }
-        });
-    } catch (err) {
-        container.innerHTML = "<p>Errore! Prova di nuovo.</p>";
-        console.error(err);
-    }
-});
-
-function playVideo(id) {
-    modal.classList.remove('hidden');
-    // Il trucco per il Lumia: usiamo l'embed ufficiale di YT che è molto compatibile
-    playerDiv.innerHTML = `<iframe width="320" height="240" src="https://www.youtube.com/embed/${id}?vq=tiny" frameborder="0" allowfullscreen></iframe>`;
-}
-
-closeBtn.onclick = () => {
-    modal.classList.add('hidden');
-    playerDiv.innerHTML = "";
+document.getElementById('searchBtn').onclick = () => {
+    let q = document.getElementById('query').value;
+    let c = document.getElementById('video-container');
+    c.innerHTML = "Caricamento...";
+    
+    fetch(P + encodeURIComponent(I + q))
+        .then(res => res.json())
+        .then(data => {
+            c.innerHTML = "";
+            data.forEach(v => {
+                if(v.type === "video") {
+                    let d = document.createElement('div');
+                    d.className = 'video-card';
+                    d.innerHTML = `<img src="${v.videoThumbnails[0].url}"><p>${v.title}</p>`;
+                    d.onclick = () => {
+                        document.getElementById('player-modal').classList.remove('hidden');
+                        document.getElementById('player').innerHTML = `<iframe width="100%" src="https://www.youtube.com/embed/${v.videoId}?vq=tiny" frameborder="0"></iframe>`;
+                    };
+                    c.appendChild(d);
+                }
+            });
+        })
+        .catch(() => c.innerHTML = "Errore! Riprova.");
 };
+
+document.getElementById('closeBtn').onclick = () => {
+    document.getElementById('player-modal').classList.add('hidden');
+    document.getElementById('player').innerHTML = "";
+};
+
