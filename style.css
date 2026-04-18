@@ -1,0 +1,63 @@
+body {
+    background-color: #000;
+    color: #0f0; /* Verde hacker */
+    font-family: 'Courier New', Courier, monospace;
+    margin: 0;
+    image-rendering: pixelated;
+}
+
+header {
+    padding: 20px;
+    border-bottom: 3px solid #0f0;
+    text-align: center;
+}
+
+h1 { font-size: 2rem; text-shadow: 2px 2px #f00; }
+
+.search-box { display: flex; gap: 10px; justify-content: center; }
+
+input {
+    background: #111;
+    border: 2px solid #0f0;
+    color: #0f0;
+    padding: 10px;
+    width: 60%;
+}
+
+button {
+    background: #0f0;
+    color: #000;
+    border: none;
+    font-weight: bold;
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+#video-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 20px;
+}
+
+.video-card {
+    border: 2px solid #333;
+    padding: 5px;
+    text-align: center;
+}
+
+.video-card img { width: 100%; border: 1px solid #0f0; }
+
+#player-modal {
+    position: fixed;
+    top: 0; left: 0; width: 100%; height: 100%;
+    background: rgba(0,0,0,0.9);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.hidden { display: none !important; }
+
+#closeBtn { margin-bottom: 20px; background: #f00; color: white; }
