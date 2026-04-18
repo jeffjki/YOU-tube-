@@ -5,8 +5,7 @@ const modal = document.getElementById('player-modal');
 const closeBtn = document.getElementById('closeBtn');
 const playerDiv = document.getElementById('player');
 
-// Usiamo un'istanza pubblica di Invidious tramite un proxy CORS
-const PROXY = "https://api.allorigins.win/raw?url=";
+// Usiamo un'istanza pubblica di Invidious tramite un proxyconconst PROXY = "https://api.allorigins.win/raw?url=";
 const INVIDIOUS = "https://invidious.projectsegfau.lt/api/v1/search?q=";
 
 searchBtn.addEventListener('click', async () => {
