@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PIXELTUBE</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="app">
+        <header>
+            <h1>PIXELTUBE</h1>
+            <div class="search-box">
+                <input type="text" id="query" placeholder="Cerca video...">
+                <button id="searchBtn">GO</button>
+            </div>
+        </header>
+
+        <main id="video-container">
+            <p class="status">Inserisci una parola e premi GO</p>
+        </main>
+
+        <div id="player-modal" class="hidden">
+            <button id="closeBtn">X CHIUDI</button>
+            <div id="player"></div>
+        </div>
+    </div>
+    <script src="script.js"></script>
+</body>
+</html>
